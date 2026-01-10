@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Task;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -20,6 +21,9 @@ class DatabaseSeeder extends Seeder
                 'bio' => "Default Bio for user $user->id",
                 'handle' => "user $user->id",
             ]);
+
+            $tasks = Task::factory()->count(10)->make();
+            $user->tasks()->saveMany($tasks);
         });
 
         // User::factory()->create([

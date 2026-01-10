@@ -5,8 +5,15 @@ use App\Models\User;
 use App\Models\Profile;
 
 Route::get('/', function () {
-    $users = User::with('profile')->get();
-    return view('welcome', compact('users'));
+    $user = User::find(1);
+    $tasks = $user->tasks()->where('status', 'in_progress')->get();
+    return view('welcome', compact('user', 'tasks'));
+});
+Route::get('/list', function () {
+    $users = User::with(['profile', 'tasks' => function($query){
+        $query->where('status', 'in_progress');
+    }])->get();
+    return view('list', compact('users'));
 });
 
 Route::get('/create', function () {
